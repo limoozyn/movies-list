@@ -1,9 +1,10 @@
 <template>
   <div class="container">
-    <search-results :showModal="showModal" :closeAction="closeDialog"></search-results>
+    <!--<search-results :showModal="showModal" :closeAction="closeDialog" :fullquery="fullquery" v-if="query.length"></search-results>-->
     <div class="row">
-      <div class="col-xs-12">
-        <button class="btn btn-success" @click="showModal = true">Search</button>
+      <div class="col-sm-12 col-md-6">
+        <input v-model="query" type=text class="form-control" placeholder="Find a Movie">
+        <button class="search-btn" @click="showModal = true"><i class="fa fa-search" aria-hidden="true"></i></button>
       </div>
     </div>
     <div class="row">
@@ -34,16 +35,22 @@ export default {
         }
       },
       search: 'https://api.themoviedb.org/3/search/movie?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1&include_adult=false&query=',
-      showModal: false
+      showModal: false,
+      query: ''
     }
   },
   components: {
-    SearchResults: SearchResults,
+//    SearchResults: SearchResults,
     'movies-list': () => import('./MoviesList')
   },
   methods: {
     closeDialog () {
       this.showModal = false
+    }
+  },
+  computed: {
+    fullquery: function(){
+      return this.search + this.query
     }
   }
 }
@@ -67,5 +74,14 @@ li {
 }
 a {
   color: #42b983;
+}
+.search-btn{
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  border-radius: 0 4px 4px 0;
+  border: 1px dotted #ccc;
+  width: 5%;
 }
 </style>

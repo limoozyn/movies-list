@@ -1,8 +1,7 @@
 <template>
   <modal :showModal="showModal" :closeAction="closeAction">
-    <h3 slot="header">Found Movies</h3>
     <span slot="body">
-      Here will be the search results
+      <movies-list :listProps="listProps" :v-if=""></movies-list>
     </span>
     <div slot="footer">
       <button @click="closeAction">Close</button>
@@ -13,8 +12,20 @@
 <script>
   import Modal from 'modal-vue'
   export default {
-    props: ['showModal', 'closeAction', 'clickAction'],
-    components: { Modal }
+    data () {
+      const _this = this
+      return {
+        listProps: {
+          title: 'Found Movies',
+          url: _this.fullquery
+        }
+      }
+    },
+    props: ['showModal', 'closeAction', 'clickAction', 'fullquery'],
+    components: {
+      Modal,
+      'movies-list': () => import('./MoviesList')
+    }
   }
 </script>
 
