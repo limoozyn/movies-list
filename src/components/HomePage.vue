@@ -1,15 +1,24 @@
 <template>
-  <div class="homepage-wrapper">
-    <div class="half">
-      <movies-list :listProps="listProps.popular"></movies-list>
+  <div class="container">
+    <search-results :showModal="showModal" :closeAction="closeDialog"></search-results>
+    <div class="row">
+      <div class="col-xs-12">
+        <button class="btn btn-success" @click="showModal = true">Search</button>
+      </div>
     </div>
-    <div class="half">
-      <movies-list :listProps="listProps.upcoming" ></movies-list>
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <movies-list :listProps="listProps.popular"></movies-list>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <movies-list :listProps="listProps.upcoming" ></movies-list>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import SearchResults from './SearchResults.vue'
 export default {
   name: 'HomePage',
   data () {
@@ -22,13 +31,20 @@ export default {
         upcoming: {
           title: 'Upcoming Releases',
           url: 'https://api.themoviedb.org/3/movie/upcoming?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1'
-        },
-        search: 'https://api.themoviedb.org/3/search/movie?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1&include_adult=false&query='
-      }
+        }
+      },
+      search: 'https://api.themoviedb.org/3/search/movie?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1&include_adult=false&query=',
+      showModal: false
     }
   },
   components: {
+    SearchResults: SearchResults,
     'movies-list': () => import('./MoviesList')
+  },
+  methods: {
+    closeDialog () {
+      this.showModal = false
+    }
   }
 }
 </script>
@@ -37,15 +53,6 @@ export default {
 <style scoped>
 h1, h2 {
   font-weight: normal;
-}
-.homepage-wrapper{
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  align-items: flex-start;
-}
-.half{
-  width: 45%;
 }
 ul {
   list-style-type: none;

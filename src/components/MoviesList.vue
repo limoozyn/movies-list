@@ -31,7 +31,6 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
-
 <style scoped>
   *{
     color: #7f8c8d;
@@ -39,6 +38,12 @@
   h2{
     text-align: left;
     margin-left: 125px;
+  }
+  @media (max-width: 768px){
+    h2 {
+      text-align: center;
+      margin-left: 0;
+    }
   }
   ul {
     list-style-type: none;
