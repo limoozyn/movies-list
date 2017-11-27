@@ -1,7 +1,7 @@
 <template>
   <modal :showModal="showModal" :closeAction="closeDialog">
     <span slot="body">
-      <movies-list :listProps="listProps" v-on:received="showFoundMovies"></movies-list>
+      <movies-list :listProps="listProps" :title="listProps.title" :url="listProps.url" v-on:received="showFoundMovies"></movies-list>
     </span>
     <div slot="footer">
       <button @click="closeDialog">Close</button>
@@ -23,6 +23,12 @@ export default {
     }
   },
   props: ['fullquery'],
+  watch: {
+    fullquery: function (newValue) {
+      console.log('SearchResult = ' + newValue)
+      this.listProps.url = newValue
+    }
+  },
   components: {
     Modal,
     'movies-list': () => import('./MoviesList')

@@ -9,10 +9,10 @@
     </div>
     <div class="row">
       <div class="col-sm-12 col-md-6">
-        <movies-list :listProps="listProps.popular"></movies-list>
+        <movies-list :title="listProps.popular.title" :url="listProps.popular.url"></movies-list>
       </div>
       <div class="col-sm-12 col-md-6">
-        <movies-list :listProps="listProps.upcoming" ></movies-list>
+        <movies-list :title="listProps.upcoming.title" :url="listProps.upcoming.url"></movies-list>
       </div>
     </div>
   </div>

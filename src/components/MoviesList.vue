@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{listProps.title}}</h2>
+    <h2>{{title}}</h2>
     <ul v-if="movies">
       <li v-for="movie in movies.results" :key="movie.id" >
         <img :src="image_base_url + movie.poster_path">
@@ -13,21 +13,32 @@
 <script>
   export default {
     name: 'movies-list',
-    props: ['listProps'],
+    props: ['title', 'url'],
     data () {
       return {
         movies: {},
         image_base_url: 'https://image.tmdb.org/t/p/w75/'
       }
     },
+    watch: {
+      url: function (newValue) {
+        this.fillFoundMovies(newValue)
+        this.$emit('received')
+      }
+    },
+    methods: {
+      fillFoundMovies: function (url) {
+        const _this = this
+        fetch(url)
+          .then((resp) => resp.json())
+          .then(function (data) {
+            _this.movies = data
+          })
+      }
+    },
     mounted () {
-      const _this = this
-      fetch(_this.listProps.url)
-        .then((resp) => resp.json())
-        .then(function (data) {
-          _this.movies = data
-          _this.$emit('received')
-        })
+      this.fillFoundMovies(this.url)
+      this.$emit('received')
     }
   }
 </script>
