@@ -8,12 +8,9 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-12 col-md-6">
-        <movies-list :title="listProps.popular.title" :url="listProps.popular.url"></movies-list>
-      </div>
-      <div class="col-sm-12 col-md-6">
-        <movies-list :title="listProps.upcoming.title" :url="listProps.upcoming.url"></movies-list>
-      </div>
+      <!--<movies-list :title="listProps.popular.title" :url="listProps.popular.url"></movies-list>-->
+      <movies-list class="col-sm-12 col-md-6" :title="'Popular Movies'" :movies="popular"></movies-list>
+      <movies-list class="col-sm-12 col-md-6" :title="'Upcoming Releases'" :movies="upcoming"></movies-list>
     </div>
   </div>
 </template>
@@ -24,29 +21,30 @@ export default {
   name: 'HomePage',
   data () {
     return {
-      listProps: {
-        popular: {
-          title: 'Popular Movies',
-          url: 'https://api.themoviedb.org/3/movie/popular?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1'
-        },
-        upcoming: {
-          title: 'Upcoming Releases',
-          url: 'https://api.themoviedb.org/3/movie/upcoming?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1'
-        }
-      },
+      popular: {},
+      upcoming: {},
       search: 'https://api.themoviedb.org/3/search/movie?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1&include_adult=false&query=',
       query: '',
       fullquery: ''
     }
   },
-  components: {
-    SearchResults: SearchResults,
-    'movies-list': () => import('./MoviesList')
-  },
   methods: {
     sendSearchQueryToModal () {
       this.fullquery = this.search + this.query
+    },
+    fillFoundMovies: function (whichType, url) {
+      fetch(url)
+        .then((resp) => resp.json())
+        .then((data) => { this[whichType] = data })
     }
+  },
+  created () {
+    this.popular = this.fillFoundMovies('popular', 'https://api.themoviedb.org/3/movie/popular?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
+    this.upcoming = this.fillFoundMovies('upcoming', 'https://api.themoviedb.org/3/movie/upcoming?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
+  },
+  components: {
+    SearchResults: SearchResults,
+    'movies-list': () => import('./MoviesList')
   }
 }
 </script>

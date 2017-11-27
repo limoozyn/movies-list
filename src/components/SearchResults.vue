@@ -13,11 +13,10 @@
 import Modal from 'modal-vue'
 export default {
   data () {
-    const _this = this
     return {
       listProps: {
         title: 'Found Movies',
-        url: _this.fullquery
+        url: this.fullquery
       },
       showModal: false
     }

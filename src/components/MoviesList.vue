@@ -13,10 +13,10 @@
 <script>
   export default {
     name: 'movies-list',
-    props: ['title', 'url'],
+    props: ['title', 'movies'],
     data () {
       return {
-        movies: {},
+//        movies: {},
         image_base_url: 'https://image.tmdb.org/t/p/w75/'
       }
     },
@@ -28,12 +28,9 @@
     },
     methods: {
       fillFoundMovies: function (url) {
-        const _this = this
         fetch(url)
           .then((resp) => resp.json())
-          .then(function (data) {
-            _this.movies = data
-          })
+          .then((data) => { this.movies = data })
       }
     },
     mounted () {
