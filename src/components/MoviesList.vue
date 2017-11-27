@@ -24,7 +24,10 @@
       const _this = this
       fetch(_this.listProps.url)
         .then((resp) => resp.json())
-        .then(function (data) { _this.movies = data })
+        .then(function (data) {
+          _this.movies = data
+          _this.$emit('received')
+        })
     }
   }
 </script>
@@ -69,4 +72,5 @@
     margin-left: 50px;
     text-align: left;
   }
+
 </style>
