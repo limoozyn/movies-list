@@ -1,50 +1,31 @@
 <template>
-  <modal :showModal="showModal" :closeAction="closeDialog">
-    <span slot="body">
-      <movies-list :listProps="listProps" :title="listProps.title" :url="listProps.url" v-on:received="showFoundMovies"></movies-list>
-    </span>
-    <div slot="footer">
-      <button @click="closeDialog">Close</button>
-    </div>
-  </modal>
+  <ul class="search-results" v-if="movies">
+    <li v-for="movie in movies.results" :key="movie.id" >
+      <span class="title">{{movie.original_title}}</span>
+    </li>
+  </ul>
 </template>
 
 <script>
-import Modal from 'modal-vue'
 export default {
-  data () {
-    return {
-      listProps: {
-        title: 'Found Movies',
-        url: this.fullquery
-      },
-      showModal: false
-    }
-  },
-  props: ['fullquery'],
-  watch: {
-    fullquery: function (newValue) {
-      this.listProps.url = newValue
-    }
-  },
-  components: {
-    Modal,
-    'movies-list': () => import('./MoviesList')
-  },
-  methods: {
-    showFoundMovies: function () {
-      this.showModal = true
-      document.body.style.overflowY = 'hidden'
-    },
-    closeDialog () {
-      this.showModal = false
-    }
-  }
+  props: ['movies']
 }
 </script>
 
-<style>
-  .modal{
-    overflow: auto;
+<style scoped>
+  ul{
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    margin-top: -4px;
+    padding-top: 10px;
+    padding-left: 0;
   }
+  li{
+    list-style: none;
+  }
+  li:not(:first-of-type){
+    border-top: 1px dotted #ccc;
+  }
+
 </style>

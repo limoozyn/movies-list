@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <search-results :fullquery="fullquery" v-if="fullquery.length"></search-results>
     <div class="row">
       <div class="col-sm-12 col-md-6">
         <form name="search-movie" onsubmit="return false">
           <input v-model="query" type=text class="form-control" placeholder="Find a Movie">
-          <button class="search-btn" @click="sendSearchQueryToModal"><i class="fa fa-search" aria-hidden="true"></i></button>
+          <i class="fa fa-search" aria-hidden="true"></i>
         </form>
+        <search-results :movies="found" v-if="found.results"></search-results>
       </div>
     </div>
     <div class="row">
@@ -24,36 +24,41 @@ export default {
     return {
       popular: {},
       upcoming: {},
+      found: {},
       search: 'https://api.themoviedb.org/3/search/movie?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1&include_adult=false&query=',
-      query: '',
-      fullquery: ''
-    }
-  },
-  methods: {
-    sendSearchQueryToModal () {
-      this.fullquery = this.search + this.query
+      query: ''
     }
   },
   created () {
-    this.popular = this.fillFoundMovies('popular', 'https://api.themoviedb.org/3/movie/popular?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
-    this.upcoming = this.fillFoundMovies('upcoming', 'https://api.themoviedb.org/3/movie/upcoming?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
+    this.fillFoundMovies('popular', 'https://api.themoviedb.org/3/movie/popular?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
+    this.fillFoundMovies('upcoming', 'https://api.themoviedb.org/3/movie/upcoming?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
   },
   mixins: [fillMovies],
   components: {
     'search-results': () => import('./SearchResults'),
     'movies-list': () => import('./MoviesList')
+  },
+  computed: {
+    fullquery: function () {
+      return this.search + this.query
+    }
+  },
+  watch: {
+    fullquery: function (newQuery) {
+      this.fillFoundMovies('found', newQuery)
+    }
   }
 }
 </script>
 
 <style scoped>
-.search-btn{
+i{
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 15px;
+  top: 10px;
   height: 100%;
   border-radius: 0 4px 4px 0;
-  border: 1px dotted #ccc;
+  border: none;
   width: 5%;
 }
 </style>
