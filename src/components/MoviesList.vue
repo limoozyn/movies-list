@@ -40,13 +40,12 @@
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-
 <style scoped>
-  *{
+  body{
     color: #7f8c8d;
   }
   h2{
+    color: #7f8c8d;
     text-align: left;
     margin-left: 125px;
   }
@@ -80,5 +79,4 @@
     margin-left: 50px;
     text-align: left;
   }
-
 </style>
