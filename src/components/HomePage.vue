@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import SearchResults from './SearchResults.vue'
 export default {
   name: 'HomePage',
   data () {
@@ -44,7 +43,7 @@ export default {
     this.upcoming = this.fillFoundMovies('upcoming', 'https://api.themoviedb.org/3/movie/upcoming?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
   },
   components: {
-    SearchResults: SearchResults,
+    'search-results': () => import('./SearchResults'),
     'movies-list': () => import('./MoviesList')
   }
 }

@@ -24,7 +24,6 @@ export default {
   props: ['fullquery'],
   watch: {
     fullquery: function (newValue) {
-      console.log('SearchResult = ' + newValue)
       this.listProps.url = newValue
     }
   },
