@@ -19,23 +19,6 @@
       return {
         image_base_url: 'https://image.tmdb.org/t/p/w75/'
       }
-    },
-    watch: {
-      url: function (newValue) {
-        this.fillFoundMovies(newValue)
-        this.$emit('received')
-      }
-    },
-    methods: {
-      fillFoundMovies: function (url) {
-        fetch(url)
-          .then((resp) => resp.json())
-          .then((data) => { this.movies = data })
-      }
-    },
-    mounted () {
-      this.fillFoundMovies(this.url)
-      this.$emit('received')
     }
   }
 </script>
