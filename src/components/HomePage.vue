@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { fillMovies } from './mixins/fillMovies'
 export default {
   name: 'HomePage',
   data () {
@@ -31,17 +32,13 @@ export default {
   methods: {
     sendSearchQueryToModal () {
       this.fullquery = this.search + this.query
-    },
-    fillFoundMovies: function (whichType, url) {
-      fetch(url)
-        .then((resp) => resp.json())
-        .then((data) => { this[whichType] = data })
     }
   },
   created () {
     this.popular = this.fillFoundMovies('popular', 'https://api.themoviedb.org/3/movie/popular?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
     this.upcoming = this.fillFoundMovies('upcoming', 'https://api.themoviedb.org/3/movie/upcoming?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
   },
+  mixins: [fillMovies],
   components: {
     'search-results': () => import('./SearchResults'),
     'movies-list': () => import('./MoviesList')
