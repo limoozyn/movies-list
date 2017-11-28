@@ -16,7 +16,6 @@
     props: ['title', 'movies'],
     data () {
       return {
-//        movies: {},
         image_base_url: 'https://image.tmdb.org/t/p/w75/'
       }
     },
