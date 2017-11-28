@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>{{title}}</h2>
+    <img src="../assets/spinner.gif" v-if="!movies.results">
     <ul v-if="movies">
       <li v-for="movie in movies.results" :key="movie.id" >
         <img :src="image_base_url + movie.poster_path">
