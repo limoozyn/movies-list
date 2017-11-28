@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-6">
         <form name="search-movie" onsubmit="return false">
-          <input v-model="query" type=text class="form-control" placeholder="Find a Movie">
+          <input v-bind:value="query" v-on:input="searchWithDelay($event.target.value)" type=text class="form-control" placeholder="Find a Movie">
           <i class="fa fa-search" aria-hidden="true"></i>
         </form>
         <search-results :movies="found" v-if="found.results"></search-results>
@@ -26,7 +26,8 @@ export default {
       upcoming: {},
       found: {},
       search: 'https://api.themoviedb.org/3/search/movie?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1&include_adult=false&query=',
-      query: ''
+      query: '',
+      timeout: null
     }
   },
   created () {
@@ -41,6 +42,12 @@ export default {
   computed: {
     fullquery: function () {
       return this.search + this.query
+    }
+  },
+  methods: {
+    searchWithDelay: function (typedText) {
+      clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => { this.query = typedText }, 500)
     }
   },
   watch: {
