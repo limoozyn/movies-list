@@ -3,12 +3,13 @@
     <search-results :fullquery="fullquery" v-if="fullquery.length"></search-results>
     <div class="row">
       <div class="col-sm-12 col-md-6">
-        <input v-model="query" type=text class="form-control" placeholder="Find a Movie">
-        <button class="search-btn" @click="sendSearchQueryToModal"><i class="fa fa-search" aria-hidden="true"></i></button>
+        <form name="search-movie" onsubmit="return false">
+          <input v-model="query" type=text class="form-control" placeholder="Find a Movie">
+          <button class="search-btn" @click="sendSearchQueryToModal"><i class="fa fa-search" aria-hidden="true"></i></button>
+        </form>
       </div>
     </div>
     <div class="row">
-      <!--<movies-list :title="listProps.popular.title" :url="listProps.popular.url"></movies-list>-->
       <movies-list class="col-sm-12 col-md-6" :title="'Popular Movies'" :movies="popular"></movies-list>
       <movies-list class="col-sm-12 col-md-6" :title="'Upcoming Releases'" :movies="upcoming"></movies-list>
     </div>
