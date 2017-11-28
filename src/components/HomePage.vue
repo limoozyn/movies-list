@@ -4,7 +4,7 @@
       <div class="col-sm-12 col-md-6">
         <form name="search-movie" onsubmit="return false">
           <input v-bind:value="query" v-on:input="searchWithDelay($event.target.value)" type=text class="form-control" placeholder="Find a Movie">
-          <i class="fa fa-search" aria-hidden="true"></i>
+          <i v-bind:class="searchIconClass" aria-hidden="true"></i>
         </form>
         <search-results :movies="found" v-if="found.results"></search-results>
       </div>
@@ -27,7 +27,8 @@ export default {
       found: {},
       search: 'https://api.themoviedb.org/3/search/movie?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1&include_adult=false&query=',
       query: '',
-      timeout: null
+      timeout: null,
+      isSpinning: false
     }
   },
   created () {
@@ -42,12 +43,19 @@ export default {
   computed: {
     fullquery: function () {
       return this.search + this.query
+    },
+    searchIconClass: function () {
+      return ['fa', {'fa-search': !this.isSpinning}, {'fa-spin fa-spinner': this.isSpinning}]
     }
+
   },
   methods: {
-    searchWithDelay: function (typedText) {
+    searchWithDelay: function (value) {
       clearTimeout(this.timeout)
-      this.timeout = setTimeout(() => { this.query = typedText }, 500)
+      this.timeout = setTimeout(() => {
+        this.isSpinning = true
+        this.query = value
+      }, 500)
     }
   },
   watch: {
@@ -61,11 +69,12 @@ export default {
 <style scoped>
 i{
   position: absolute;
-  right: 15px;
+  right: 20px;
   top: 10px;
   height: 100%;
   border-radius: 0 4px 4px 0;
   border: none;
-  width: 5%;
+  width: 16px;
+  height: 16px;
 }
 </style>
