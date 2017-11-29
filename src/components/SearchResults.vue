@@ -27,5 +27,4 @@ export default {
   li:not(:first-of-type){
     border-top: 1px dotted #ccc;
   }
-
 </style>

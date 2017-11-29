@@ -1,11 +1,11 @@
 <template>
   <div>
-    <div id="banner">
+    <header>
       <h1>{{msg}}</h1>
-    </div>
-    <div id="app">
+    </header>
+    <main id="app">
       <router-view/>
-    </div>
+    </main>
   </div>
 </template>
 

@@ -1,14 +1,16 @@
 <template>
-  <div>
+  <section>
     <h2>{{title}}</h2>
     <img src="../assets/spinner.gif" v-if="!movies.results">
     <ul v-if="movies">
       <li v-for="movie in movies.results" :key="movie.id" >
-        <img :src="image_base_url + movie.poster_path">
-        <span class="title">{{movie.original_title}}</span>
+        <figure>
+          <img :src="image_base_url + movie.poster_path">
+          <figcaption class="title">{{movie.original_title}}</figcaption>
+        </figure>
       </li>
     </ul>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -50,13 +52,13 @@
     border-top: #ccc 1px dotted;
     padding-top: 20px;
   }
-  li {
+  li figure{
     display: flex;
     margin: 10px;
     align-items: center;
     justify-content: flex-start;
   }
-  span{
+  .title{
     flex-grow: 1;
     color: #7f8c8d;
     margin-left: 50px;
