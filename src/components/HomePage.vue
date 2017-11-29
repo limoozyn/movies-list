@@ -25,15 +25,16 @@ export default {
       popular: {},
       upcoming: {},
       found: {},
-      search: 'https://api.themoviedb.org/3/search/movie?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1&include_adult=false&query=',
+      key: process.env.API_KEY,
       query: '',
       timeout: null,
-      isSpinning: false
+      isSpinning: false,
+      default: undefined
     }
   },
   created () {
-    this.fillFoundMovies('popular', 'https://api.themoviedb.org/3/movie/popular?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
-    this.fillFoundMovies('upcoming', 'https://api.themoviedb.org/3/movie/upcoming?api_key=2bffc68560bcf99a67d3ea8fa8f937b4&language=en-US&page=1')
+    this.fillFoundMovies('popular', this.composeApiUrl('/popular'))
+    this.fillFoundMovies('upcoming', this.composeApiUrl('/upcoming'))
   },
   mixins: [fillMovies],
   components: {
@@ -42,7 +43,7 @@ export default {
   },
   computed: {
     fullquery: function () {
-      return this.search + this.query
+      return this.composeApiUrl(undefined, 'search/', this.query)
     },
     searchIconClass: function () {
       return ['fa', {'fa-search': !this.isSpinning}, {'fa-spin fa-spinner': this.isSpinning}]
@@ -56,6 +57,9 @@ export default {
         this.isSpinning = true
         this.query = value
       }, 500)
+    },
+    composeApiUrl: function (whichType = '', search = '', query, apiKey = this.key, language = 'en-US', page = '1', adult = 'false') {
+      return `https://api.themoviedb.org/3/${search}movie${whichType}?api_key=${apiKey}&language=${language}&page=${page}&include_adult=${adult}${query ? '&query=' + query : ''}`
     }
   },
   watch: {
