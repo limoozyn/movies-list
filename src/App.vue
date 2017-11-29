@@ -25,9 +25,10 @@ h1{
   color: white;
   text-align: left;
   margin-left: 20vw;
-  font: bold 48px "Source Code Pro", Monaco, monospace
+  font-weight: 800;
+  font-size: 48px;
 }
-#banner{
+header{
   background: url("assets/banner.jpg") no-repeat center;
   background-size: cover;
   width: 100%;
@@ -35,8 +36,8 @@ h1{
   display: flex;
   align-items: center;
 }
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+main {
+  font-family: 'Source Sans Pro', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
