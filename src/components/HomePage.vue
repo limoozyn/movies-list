@@ -28,13 +28,12 @@ export default {
       key: process.env.API_KEY,
       query: '',
       timeout: null,
-      isSpinning: false,
-      default: undefined
+      isSpinning: false
     }
   },
   created () {
-    this.fillFoundMovies('popular', this.composeApiUrl('/popular'))
-    this.fillFoundMovies('upcoming', this.composeApiUrl('/upcoming'))
+    this.fillFoundMovies('popular', this.composeApiUrl({whichType: 'popular'}))
+    this.fillFoundMovies('upcoming', this.composeApiUrl({whichType: 'upcoming'}))
   },
   mixins: [fillMovies],
   components: {
@@ -43,12 +42,11 @@ export default {
   },
   computed: {
     fullquery: function () {
-      return this.composeApiUrl(undefined, 'search/', this.query)
+      return this.composeApiUrl({whichType: 'search', query: this.query})
     },
     searchIconClass: function () {
       return ['fa', {'fa-search': !this.isSpinning}, {'fa-spin fa-spinner': this.isSpinning}]
     }
-
   },
   methods: {
     searchWithDelay: function (value) {
@@ -57,9 +55,6 @@ export default {
         this.isSpinning = true
         this.query = value
       }, 500)
-    },
-    composeApiUrl: function (whichType = '', search = '', query, apiKey = this.key, language = 'en-US', page = '1', adult = 'false') {
-      return `https://api.themoviedb.org/3/${search}movie${whichType}?api_key=${apiKey}&language=${language}&page=${page}&include_adult=${adult}${query ? '&query=' + query : ''}`
     }
   },
   watch: {

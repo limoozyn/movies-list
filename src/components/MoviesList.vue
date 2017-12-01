@@ -1,13 +1,15 @@
 <template>
   <section>
     <h2>{{title}}</h2>
-    <img src="../assets/spinner.gif" v-if="!movies.results">
+    <img src="../assets/spinner.gif" v-if="!movies">
     <ul v-if="movies">
-      <li v-for="movie in movies.results" :key="movie.id" >
-        <figure>
-          <img :src="image_base_url + movie.poster_path">
-          <figcaption class="title">{{movie.original_title}}</figcaption>
-        </figure>
+      <li v-for="movie in movies" :key="movie.id" >
+        <a v-bind:href="movie.id">
+          <figure>
+            <img v-if="movie.poster_path" :src="image_base_url + movie.poster_path">
+            <figcaption class="title">{{movie.original_title}}</figcaption>
+          </figure>
+        </a>
       </li>
     </ul>
   </section>
