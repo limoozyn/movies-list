@@ -16,4 +16,3 @@ selenium-debug.log
 *.njsproj
 *.sln
 /config/ignored.env.js
-package-lock.json

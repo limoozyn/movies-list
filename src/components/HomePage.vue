@@ -25,7 +25,6 @@ export default {
       popular: {},
       upcoming: {},
       found: {},
-      key: process.env.API_KEY,
       query: '',
       timeout: null,
       isSpinning: false

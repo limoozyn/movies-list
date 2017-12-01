@@ -35,7 +35,6 @@ export default {
   data () {
     return {
       info: {},
-      key: process.env.API_KEY,
       url: this.$route.params.id,
       image_base_url: 'https://image.tmdb.org/t/p/w150/',
       genres: '',

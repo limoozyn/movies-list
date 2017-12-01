@@ -23,7 +23,7 @@ export const fillMovies = {
     composeApiUrl: function ({whichType, query = '', id = ''}) {
       const baseUrl = 'https://api.themoviedb.org/3/'
       const urlParams = {
-        api_key: this.key,
+        api_key: process.env.API_KEY,
         language: 'en-US',
         page: '1',
         include_adult: 'false'
