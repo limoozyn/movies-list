@@ -1,5 +1,36 @@
 import qs from 'qs'
 export const fillMovies = {
+  data () {
+    return {
+      urlParams: {
+        api_key: process.env.API_KEY,
+        language: 'en-US',
+        page: '1',
+        include_adult: 'false'
+      },
+      baseUrl: 'https://api.themoviedb.org/3/',
+      upcomingUrl: '',
+      recommendationsUrl: '',
+      collectionUrl: ''
+    }
+  },
+  computed: {
+    popularUrl: function () {
+      const urlParamsString = qs.stringify(this.urlParams)
+      return `${this.baseUrl}movie/popular?${urlParamsString}`
+    },
+    popularPromise: function () {
+      return new Promise((resolve, reject) => {
+        fetch(this.popularUrl)
+          .then((resp) => resp.json())
+          .then((data) => {
+            resolve(data.results)
+            // TODO: move the stop spinning to the HomePage
+            // this.isSpinning = false
+          })
+      })
+    }
+  },
   methods: {
     fillFoundMovies: function (whichType, url) {
       fetch(url)

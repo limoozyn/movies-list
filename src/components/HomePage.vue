@@ -22,8 +22,8 @@ export default {
   name: 'HomePage',
   data () {
     return {
-      popular: {},
-      upcoming: {},
+      popular: [],
+      upcoming: [],
       found: {},
       query: '',
       timeout: null,
@@ -31,7 +31,9 @@ export default {
     }
   },
   created () {
-    this.fillFoundMovies('popular', this.composeApiUrl({whichType: 'popular'}))
+//    this.fillFoundMovies('popular', this.composeApiUrl({whichType: 'popular'}))
+    this.popularPromise.then(
+      result => { this.popular = result })
     this.fillFoundMovies('upcoming', this.composeApiUrl({whichType: 'upcoming'}))
   },
   mixins: [fillMovies],
