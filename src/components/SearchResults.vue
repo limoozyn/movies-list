@@ -1,6 +1,6 @@
 <template>
   <ul class="search-results" v-if="movies">
-    <li v-for="movie in movies.results" :key="movie.id" >
+    <li v-for="movie in movies" :key="movie.id" >
       <span class="title">{{movie.original_title}}</span>
     </li>
   </ul>

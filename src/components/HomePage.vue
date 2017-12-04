@@ -6,7 +6,7 @@
           <input v-bind:value="query" v-on:input="searchWithDelay($event.target.value)" type=text class="form-control" placeholder="Find a Movie">
           <i v-bind:class="searchIconClass" aria-hidden="true"></i>
         </form>
-        <search-results :movies="found" v-if="found.results"></search-results>
+        <search-results :movies="found" v-if="found"></search-results>
       </div>
     </div>
     <div class="row">
@@ -24,17 +24,15 @@ export default {
     return {
       popular: [],
       upcoming: [],
-      found: {},
+      found: [],
       query: '',
       timeout: null,
       isSpinning: false
     }
   },
   created () {
-//    this.fillFoundMovies('popular', this.composeApiUrl({whichType: 'popular'}))
-    this.popularPromise.then(
-      result => { this.popular = result })
-    this.fillFoundMovies('upcoming', this.composeApiUrl({whichType: 'upcoming'}))
+    this.getPopular()
+    this.getUpcoming()
   },
   mixins: [fillMovies],
   components: {
@@ -42,9 +40,6 @@ export default {
     'movies-list': () => import('./MoviesList')
   },
   computed: {
-    fullquery: function () {
-      return this.composeApiUrl({whichType: 'search', query: this.query})
-    },
     searchIconClass: function () {
       return ['fa', {'fa-search': !this.isSpinning}, {'fa-spin fa-spinner': this.isSpinning}]
     }
@@ -53,14 +48,15 @@ export default {
     searchWithDelay: function (value) {
       clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
-        this.isSpinning = true
         this.query = value
       }, 500)
     }
   },
   watch: {
     fullquery: function (newQuery) {
-      this.fillFoundMovies('found', newQuery)
+      this.isSpinning = true
+      this.search()
+      this.isSpinning = false
     }
   }
 }

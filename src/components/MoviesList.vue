@@ -1,7 +1,7 @@
 <template>
   <section>
     <h2>{{title}}</h2>
-    <img src="../assets/spinner.gif" v-if="!movies">
+    <img src="../assets/spinner.gif" v-if="movies.length === 0">
     <ul v-if="movies">
       <li v-for="movie in movies" :key="movie.id" >
         <a v-bind:href="movie.id">

@@ -39,15 +39,14 @@ export default {
       image_base_url: 'https://image.tmdb.org/t/p/w150/',
       genres: '',
       producers: '',
-      collection: {},
-      recommendations: {}
+      collection: [],
+      collectionId: '',
+      recommendations: []
     }
   },
-  props: [],
-  computed: {
-  },
   created () {
-    this.fillFoundMovies('info', this.composeApiUrl({whichType: 'info', id: this.url}))
+    this.getDetails()
+    this.getRecommendations()
   },
   mixins: [fillMovies],
   methods: {
@@ -63,14 +62,15 @@ export default {
     info: function (newValue) {
       this.genres = this.joinManyOptions(newValue.genres)
       this.producers = this.joinManyOptions(newValue.production_companies)
-      this.fillFoundMovies('collection', this.composeApiUrl({whichType: 'collection', id: newValue.belongs_to_collection.id}))
-      this.fillFoundMovies('recommendations', this.composeApiUrl({whichType: 'recommendations', id: this.url}))
+      this.collectionId = newValue.belongs_to_collection.id
+    },
+    collectionId: function (newValue) {
+      this.getCollection()
     }
   },
   components: {
     'movies-list': () => import('./MoviesList')
   }
-
 }
 </script>
 
