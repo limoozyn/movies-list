@@ -14,17 +14,19 @@ export default {
 
 <style scoped>
   ul{
-    border: 1px solid #ccc;
-    border-top: none;
-    border-radius: 0 0 4px 4px;
     margin-top: -4px;
-    padding-top: 10px;
     padding-left: 0;
-  }
-  li{
     list-style: none;
   }
-  li:not(:first-of-type){
+  li{
+    border: 1px solid #ccc;
     border-top: 1px dotted #ccc;
+  }
+  li:first-of-type{
+    border-top: none;
+    padding-top: 10px;
+  }
+  li:last-of-type{
+    border-radius: 0 0 4px 4px;
   }
 </style>
