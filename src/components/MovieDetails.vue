@@ -51,11 +51,7 @@ export default {
   mixins: [fillMovies],
   methods: {
     joinManyOptions: function (list) {
-      const temp = []
-      list.forEach((option) => {
-        temp.push(option.name)
-      })
-      return temp.join(', ')
+      return list.map((option) => option.name).join(', ')
     }
   },
   watch: {
