@@ -37,39 +37,36 @@ export const fillMovies = {
     }
   },
   methods: {
-    getPromise: function (url) {
-      return new Promise((resolve, reject) => {
-        fetch(url)
-          .then((resp) => resp.json())
-          .then((data) => {
-            resolve(data)
-            // TODO: move the stop spinning to the HomePage
-            // this.isSpinning = false
-          })
-      })
+    getDataFromAPI: function (url) {
+      return fetch(url)
+        .then((resp) => resp.json())
+        .then((data) => {
+          return data
+          // TODO: move the stop spinning to the HomePage
+        })
     },
     getPopular: function () {
-      this.getPromise(this.popularUrl).then(
+      this.getDataFromAPI(this.popularUrl).then(
         result => { this.popular = result.results })
     },
     getUpcoming: function () {
-      this.getPromise(this.upcomingUrl).then(
+      this.getDataFromAPI(this.upcomingUrl).then(
         result => { this.upcoming = result.results })
     },
     getDetails: function () {
-      this.getPromise(this.detailsUrl).then(
+      this.getDataFromAPI(this.detailsUrl).then(
         result => { this.info = result })
     },
     getCollection: function () {
-      this.getPromise(this.collectionUrl).then(
+      this.getDataFromAPI(this.collectionUrl).then(
         result => { this.collection = result.parts })
     },
     getRecommendations: function () {
-      this.getPromise(this.recommendationsUrl).then(
+      this.getDataFromAPI(this.recommendationsUrl).then(
         result => { this.recommendations = result.results })
     },
     search: function () {
-      this.getPromise(this.fullquery).then(
+      this.getDataFromAPI(this.fullquery).then(
         result => { this.found = result.results })
     }
   }
