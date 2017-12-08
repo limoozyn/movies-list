@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { fillMovies } from './mixins/fillMovies'
+import { getDataFromAPI, detailsUrl, collectionUrl, recommendationsUrl } from '../helpers/fillDetails'
 export default {
   name: 'MovieDetails',
   data () {
@@ -48,10 +48,21 @@ export default {
     this.getDetails()
     this.getRecommendations()
   },
-  mixins: [fillMovies],
   methods: {
     joinManyOptions: function (list) {
       return list.map((option) => option.name).join(', ')
+    },
+    getDetails: function () {
+      getDataFromAPI(detailsUrl(this.url)).then(
+        result => { this.info = result })
+    },
+    getCollection: function () {
+      getDataFromAPI(collectionUrl(this.collectionId)).then(
+        result => { this.collection = result.parts })
+    },
+    getRecommendations: function () {
+      getDataFromAPI(recommendationsUrl(this.url)).then(
+        result => { this.recommendations = result.results })
     }
   },
   watch: {

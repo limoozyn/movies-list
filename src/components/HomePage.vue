@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { fillMovies } from './mixins/fillMovies'
+import { getDataFromAPI, popularUrl, upcomingUrl, fullquery } from '../helpers/fillDetails'
 export default {
   name: 'HomePage',
   data () {
@@ -34,7 +34,6 @@ export default {
     this.getPopular()
     this.getUpcoming()
   },
-  mixins: [fillMovies],
   components: {
     'search-results': () => import('./SearchResults'),
     'movies-list': () => import('./MoviesList')
@@ -50,12 +49,24 @@ export default {
       this.timeout = setTimeout(() => {
         this.query = value
       }, 500)
+    },
+    getPopular: function () {
+      getDataFromAPI(popularUrl()).then(
+        result => { this.popular = result.results })
+    },
+    getUpcoming: function () {
+      getDataFromAPI(upcomingUrl()).then(
+        result => { this.upcoming = result.results })
+    },
+    search: function () {
+      getDataFromAPI(fullquery(this.query)).then(
+        result => { this.found = result.results })
     }
   },
   watch: {
-    fullquery: function (newQuery) {
+    query: function (newQuery) {
       this.isSpinning = true
-      this.search()
+      newQuery.trim().length ? this.search() : this.found = []
       this.isSpinning = false
     }
   }
@@ -67,7 +78,6 @@ i{
   position: absolute;
   right: 20px;
   top: 10px;
-  height: 100%;
   border-radius: 0 4px 4px 0;
   border: none;
   width: 16px;
