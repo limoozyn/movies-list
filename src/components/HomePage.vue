@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-6">
         <form name="search-movie" onsubmit="return false">
-          <input v-bind:value="query" v-on:input="searchWithDelay($event.target.value)" type=text class="form-control" placeholder="Find a Movie">
+          <input v-on:input="searchWithDelay" type=text class="form-control" placeholder="Find a Movie">
           <i v-bind:class="searchIconClass" aria-hidden="true"></i>
         </form>
         <search-results :movies="found" v-if="found"></search-results>
@@ -24,6 +24,7 @@
 
 <script>
 import { getDataFromAPI, popularUrl, upcomingUrl, fullquery } from '../helpers/fillDetails'
+import _ from 'lodash'
 export default {
   name: 'HomePage',
   data () {
@@ -52,14 +53,9 @@ export default {
     }
   },
   methods: {
-    searchWithDelay: function (value) {
-      this.isSpinning = true
-      clearTimeout(this.timeout)
-      this.timeout = setTimeout(() => {
-        this.query = value
-        this.isSpinning = true
-      }, 500)
-    },
+    searchWithDelay: _.debounce(function (e) {
+      this.query = e.target.value
+    }, 500),
     getPopular: function () {
       getDataFromAPI(popularUrl()).then(
         result => {
