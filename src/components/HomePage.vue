@@ -10,8 +10,14 @@
       </div>
     </div>
     <div class="row">
-      <movies-list class="col-sm-12 col-md-6" :title="'Popular Movies'" :movies="popular"></movies-list>
-      <movies-list class="col-sm-12 col-md-6" :title="'Upcoming Releases'" :movies="upcoming"></movies-list>
+      <div class="col-sm-12 col-md-6">
+        <img src="../assets/spinner.gif" v-show="popular_loading">
+        <movies-list :title="'Popular Movies'" :movies="popular" v-show="!popular_loading"></movies-list>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <img src="../assets/spinner.gif" v-show="upcoming_loading" >
+        <movies-list :title="'Upcoming Releases'" :movies="upcoming" v-show="!upcoming_loading"></movies-list>
+      </div>
     </div>
   </div>
 </template>
@@ -27,10 +33,12 @@ export default {
       found: [],
       query: '',
       timeout: null,
-      isSpinning: false
+      isSpinning: false,
+      popular_loading: true,
+      upcoming_loading: true
     }
   },
-  created () {
+  mounted () {
     this.getPopular()
     this.getUpcoming()
   },
@@ -45,18 +53,26 @@ export default {
   },
   methods: {
     searchWithDelay: function (value) {
+      this.isSpinning = true
       clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
         this.query = value
+        this.isSpinning = true
       }, 500)
     },
     getPopular: function () {
       getDataFromAPI(popularUrl()).then(
-        result => { this.popular = result.results })
+        result => {
+          this.popular = result.results
+          this.popular_loading = false
+        })
     },
     getUpcoming: function () {
       getDataFromAPI(upcomingUrl()).then(
-        result => { this.upcoming = result.results })
+        result => {
+          this.upcoming = result.results
+          this.upcoming_loading = false
+        })
     },
     search: function () {
       getDataFromAPI(fullquery(this.query)).then(

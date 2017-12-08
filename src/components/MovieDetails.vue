@@ -22,8 +22,8 @@
       </div>
     </div>
     <div class="row">
-      <movies-list class="col-sm-12 col-md-6" :title="'Collection'" :movies="collection"></movies-list>
-      <movies-list class="col-sm-12 col-md-6" :title="'Recommended'" :movies="recommendations"></movies-list>
+      <movies-list class="col-sm-12 col-md-6" :title="'Collection'" :movies="collection" :loading="collection_loading"></movies-list>
+      <movies-list class="col-sm-12 col-md-6" :title="'Recommended'" :movies="recommendations" :loading="recommended-loading"></movies-list>
     </div>
   </div>
 </template>
@@ -41,7 +41,9 @@ export default {
       producers: '',
       collection: [],
       collectionId: '',
-      recommendations: []
+      recommendations: [],
+      collection_loading: false,
+      recommended_loading: false
     }
   },
   created () {
@@ -57,12 +59,20 @@ export default {
         result => { this.info = result })
     },
     getCollection: function () {
+      this.collection_loading = true
       getDataFromAPI(collectionUrl(this.collectionId)).then(
-        result => { this.collection = result.parts })
+        result => {
+          this.collection = result.parts
+          this.collection_loading = false
+        })
     },
     getRecommendations: function () {
+      this.recommended_loading = true
       getDataFromAPI(recommendationsUrl(this.url)).then(
-        result => { this.recommendations = result.results })
+        result => {
+          this.recommendations = result.results
+          this.recommended_loading = false
+        })
     }
   },
   watch: {
