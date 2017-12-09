@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-12 col-md-6">
         <form name="search-movie" onsubmit="return false">
-          <input v-on:input="searchWithDelay" type=text class="form-control" placeholder="Find a Movie">
+          <input v-on:input="inputStarted" type=text class="form-control" placeholder="Find a Movie">
           <i v-bind:class="searchIconClass" aria-hidden="true"></i>
         </form>
         <search-results :movies="found" v-if="found"></search-results>
@@ -55,7 +55,12 @@ export default {
   methods: {
     searchWithDelay: _.debounce(function (e) {
       this.query = e.target.value
+      this.isSpinning = false
     }, 500),
+    inputStarted: function (e) {
+      this.isSpinning = true
+      this.searchWithDelay(e)
+    },
     getPopular: function () {
       getDataFromAPI(popularUrl()).then(
         result => {
