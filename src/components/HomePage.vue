@@ -11,12 +11,12 @@
     </div>
     <div class="row">
       <div class="col-sm-12 col-md-6">
-        <img src="../assets/spinner.gif" v-show="popularLoading">
-        <movies-list :title="'Popular Movies'" :movies="popular" v-show="!popularLoading"></movies-list>
+        <img src="../assets/spinner.gif" v-show="popular.loading">
+        <movies-list :title="'Popular Movies'" :movies="popular.movies" v-show="!popular.loading"></movies-list>
       </div>
       <div class="col-sm-12 col-md-6">
-        <img src="../assets/spinner.gif" v-show="upcomingLoading" >
-        <movies-list :title="'Upcoming Releases'" :movies="upcoming" v-show="!upcomingLoading"></movies-list>
+        <img src="../assets/spinner.gif" v-show="upcoming.loading" >
+        <movies-list :title="'Upcoming Releases'" :movies="upcoming.movies" v-show="!upcoming.loading"></movies-list>
       </div>
     </div>
   </div>
@@ -29,14 +29,12 @@ export default {
   name: 'HomePage',
   data () {
     return {
-      popular: [],
-      upcoming: [],
+      popular: {},
+      upcoming: {},
       found: [],
       query: '',
       timeout: null,
-      isSpinning: false,
-      popularLoading: true,
-      upcomingLoading: true
+      isSpinning: false
     }
   },
   mounted () {
@@ -64,15 +62,13 @@ export default {
     getPopular: function () {
       getDataFromAPI(popularUrl(), 'results').then(
         result => {
-          this.popular = result
-          this.popularLoading = false
+          this.popular = {movies: result, loading: false}
         })
     },
     getUpcoming: function () {
       getDataFromAPI(upcomingUrl(), 'results').then(
         result => {
-          this.upcoming = result
-          this.upcomingLoading = false
+          this.upcoming = {movies: result, loading: false}
         })
     },
     search: function () {

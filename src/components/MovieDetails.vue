@@ -22,8 +22,8 @@
       </div>
     </div>
     <div class="row">
-      <movies-list class="col-sm-12 col-md-6" :title="'Collection'" :movies="collection" :loading="collectionLoading"></movies-list>
-      <movies-list class="col-sm-12 col-md-6" :title="'Recommended'" :movies="recommendations" :loading="recommendedLoading"></movies-list>
+      <movies-list class="col-sm-12 col-md-6" :title="'Collection'" :movies="collection.movies" :loading="collection.loading"></movies-list>
+      <movies-list class="col-sm-12 col-md-6" :title="'Recommended'" :movies="recommendations.movies" :loading="recommendations.loading"></movies-list>
     </div>
   </div>
 </template>
@@ -39,11 +39,9 @@ export default {
       image_base_url: 'https://image.tmdb.org/t/p/w150/',
       genres: '',
       producers: '',
-      collection: [],
+      collection: {},
       collectionId: '',
-      recommendations: [],
-      collectionLoading: false,
-      recommendedLoading: false
+      recommendations: {}
     }
   },
   created () {
@@ -62,16 +60,14 @@ export default {
       this.collectionLoading = true
       getDataFromAPI(collectionUrl(this.collectionId), 'parts').then(
         result => {
-          this.collection = result
-          this.collectionLoading = false
+          this.collection = {movies: result, loading: false}
         })
     },
     getRecommendations: function () {
       this.recommendedLoading = true
       getDataFromAPI(recommendationsUrl(this.url), 'results').then(
         result => {
-          this.recommendations = result
-          this.recommendedLoading = false
+          this.recommendations = {movies: result, loading: false}
         })
     }
   },
