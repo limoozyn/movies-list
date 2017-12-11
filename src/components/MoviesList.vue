@@ -5,7 +5,7 @@
       <li v-for="movie in movies" :key="movie.id" >
         <a v-bind:href="movie.id">
           <figure>
-            <img v-if="movie.poster_path" :src="image_base_url + movie.poster_path">
+            <img v-if="movie.poster_path" :src="movieImage(movie.poster_path)">
             <figcaption class="title">{{movie.original_title}}</figcaption>
           </figure>
         </a>
@@ -21,6 +21,11 @@
     data () {
       return {
         image_base_url: 'https://image.tmdb.org/t/p/w75/'
+      }
+    },
+    methods: {
+      movieImage (posterPath) {
+        return this.image_base_url + posterPath
       }
     }
   }

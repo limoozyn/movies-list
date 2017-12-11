@@ -11,12 +11,12 @@
     </div>
     <div class="row">
       <div class="col-sm-12 col-md-6">
-        <img src="../assets/spinner.gif" v-show="popular_loading">
-        <movies-list :title="'Popular Movies'" :movies="popular" v-show="!popular_loading"></movies-list>
+        <img src="../assets/spinner.gif" v-show="popularLoading">
+        <movies-list :title="'Popular Movies'" :movies="popular" v-show="!popularLoading"></movies-list>
       </div>
       <div class="col-sm-12 col-md-6">
-        <img src="../assets/spinner.gif" v-show="upcoming_loading" >
-        <movies-list :title="'Upcoming Releases'" :movies="upcoming" v-show="!upcoming_loading"></movies-list>
+        <img src="../assets/spinner.gif" v-show="upcomingLoading" >
+        <movies-list :title="'Upcoming Releases'" :movies="upcoming" v-show="!upcomingLoading"></movies-list>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
 
 <script>
 import { getDataFromAPI, popularUrl, upcomingUrl, fullquery } from '../helpers/fillDetails'
-import _ from 'lodash'
+import debounce from 'lodash.debounce'
 export default {
   name: 'HomePage',
   data () {
@@ -35,8 +35,8 @@ export default {
       query: '',
       timeout: null,
       isSpinning: false,
-      popular_loading: true,
-      upcoming_loading: true
+      popularLoading: true,
+      upcomingLoading: true
     }
   },
   mounted () {
@@ -48,12 +48,12 @@ export default {
     'movies-list': () => import('./MoviesList')
   },
   computed: {
-    searchIconClass: function () {
+    searchIconClass () {
       return ['fa', {'fa-search': !this.isSpinning}, {'fa-spin fa-spinner': this.isSpinning}]
     }
   },
   methods: {
-    searchWithDelay: _.debounce(function (e) {
+    searchWithDelay: debounce(function (e) {
       this.query = e.target.value
       this.isSpinning = false
     }, 500),
@@ -62,22 +62,22 @@ export default {
       this.searchWithDelay(e)
     },
     getPopular: function () {
-      getDataFromAPI(popularUrl()).then(
+      getDataFromAPI(popularUrl(), 'results').then(
         result => {
-          this.popular = result.results
-          this.popular_loading = false
+          this.popular = result
+          this.popularLoading = false
         })
     },
     getUpcoming: function () {
-      getDataFromAPI(upcomingUrl()).then(
+      getDataFromAPI(upcomingUrl(), 'results').then(
         result => {
-          this.upcoming = result.results
-          this.upcoming_loading = false
+          this.upcoming = result
+          this.upcomingLoading = false
         })
     },
     search: function () {
-      getDataFromAPI(fullquery(this.query)).then(
-        result => { this.found = result.results })
+      getDataFromAPI(fullquery(this.query), 'results').then(
+        result => { this.found = result })
     }
   },
   watch: {

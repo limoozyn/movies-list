@@ -4,7 +4,7 @@
       <div class="col-sm-12 col-md-6">
         <article class="details">
           <figure>
-            <img :src="image_base_url + info.poster_path">
+            <img :src="movieBanner">
             <figcaption class="title">
               <h2>{{info.original_title}}</h2>
               <p>{{info.overview}}</p>
@@ -22,8 +22,8 @@
       </div>
     </div>
     <div class="row">
-      <movies-list class="col-sm-12 col-md-6" :title="'Collection'" :movies="collection" :loading="collection_loading"></movies-list>
-      <movies-list class="col-sm-12 col-md-6" :title="'Recommended'" :movies="recommendations" :loading="recommended-loading"></movies-list>
+      <movies-list class="col-sm-12 col-md-6" :title="'Collection'" :movies="collection" :loading="collectionLoading"></movies-list>
+      <movies-list class="col-sm-12 col-md-6" :title="'Recommended'" :movies="recommendations" :loading="recommendedLoading"></movies-list>
     </div>
   </div>
 </template>
@@ -42,8 +42,8 @@ export default {
       collection: [],
       collectionId: '',
       recommendations: [],
-      collection_loading: false,
-      recommended_loading: false
+      collectionLoading: false,
+      recommendedLoading: false
     }
   },
   created () {
@@ -59,27 +59,33 @@ export default {
         result => { this.info = result })
     },
     getCollection: function () {
-      this.collection_loading = true
-      getDataFromAPI(collectionUrl(this.collectionId)).then(
+      this.collectionLoading = true
+      getDataFromAPI(collectionUrl(this.collectionId), 'parts').then(
         result => {
-          this.collection = result.parts
-          this.collection_loading = false
+          this.collection = result
+          this.collectionLoading = false
         })
     },
     getRecommendations: function () {
-      this.recommended_loading = true
-      getDataFromAPI(recommendationsUrl(this.url)).then(
+      this.recommendedLoading = true
+      getDataFromAPI(recommendationsUrl(this.url), 'results').then(
         result => {
-          this.recommendations = result.results
-          this.recommended_loading = false
+          this.recommendations = result
+          this.recommendedLoading = false
         })
     }
+  },
+  computed: {
+    movieBanner () {
+      return this.image_base_url + this.info.poster_path
+    }
+
   },
   watch: {
     info: function (newValue) {
       this.genres = this.joinManyOptions(newValue.genres)
       this.producers = this.joinManyOptions(newValue.production_companies)
-      this.collectionId = newValue.belongs_to_collection.id
+      newValue.belongs_to_collection && (this.collectionId = newValue.belongs_to_collection.id)
     },
     collectionId: function (newValue) {
       this.getCollection()

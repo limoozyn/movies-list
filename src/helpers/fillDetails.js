@@ -38,11 +38,8 @@ export function fullquery (query) {
   return `${baseUrl}search/movie?${updParamsString}`
 }
 
-export function getDataFromAPI (url) {
+export function getDataFromAPI (url, keyToBeRetrieved) {
   return fetch(url)
     .then((resp) => resp.json())
-    .then((data) => {
-      return data
-      // TODO: move the stop spinning to the HomePage
-    })
+    .then((result) => keyToBeRetrieved ? result[keyToBeRetrieved] : result)
 }
