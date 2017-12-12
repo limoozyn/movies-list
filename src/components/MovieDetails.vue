@@ -4,7 +4,7 @@
       <div class="col-sm-12 col-md-6">
         <article class="details">
           <figure>
-            <img :src="movieBanner">
+            <img :src="movieBannerUrl">
             <figcaption class="title">
               <h2>{{info.original_title}}</h2>
               <p>{{info.overview}}</p>
@@ -37,6 +37,7 @@ export default {
       info: {},
       url: this.$route.params.id,
       image_base_url: 'https://image.tmdb.org/t/p/w150/',
+      movieBannerUrl: '',
       genres: '',
       producers: '',
       collection: {},
@@ -69,16 +70,15 @@ export default {
         result => {
           this.recommendations = {movies: result, loading: false}
         })
+    },
+    getMovieBanner () {
     }
   },
   computed: {
-    movieBanner () {
-      return this.image_base_url + this.info.poster_path
-    }
-
   },
   watch: {
     info: function (newValue) {
+      this.movieBannerUrl = this.image_base_url + this.info.poster_path
       this.genres = this.joinManyOptions(newValue.genres)
       this.producers = this.joinManyOptions(newValue.production_companies)
       newValue.belongs_to_collection && (this.collectionId = newValue.belongs_to_collection.id)
