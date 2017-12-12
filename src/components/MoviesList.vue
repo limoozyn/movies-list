@@ -3,12 +3,7 @@
     <h2>{{title}}</h2>
     <ul v-if="movies">
       <li v-for="movie in movies" :key="movie.id" >
-        <a v-bind:href="movie.id">
-          <figure>
-            <img v-if="movie.poster_path" :src="movieImage(movie.poster_path)">
-            <figcaption class="title">{{movie.original_title}}</figcaption>
-          </figure>
-        </a>
+        <list-movie :movie="movie"></list-movie>
       </li>
     </ul>
   </section>
@@ -27,6 +22,9 @@
       movieImage (posterPath) {
         return this.image_base_url + posterPath
       }
+    },
+    components: {
+      'list-movie': () => import('./ListMovie')
     }
   }
 </script>
@@ -57,17 +55,5 @@
   li:not(:first-child){
     border-top: #ccc 1px dotted;
     padding-top: 20px;
-  }
-  li figure{
-    display: flex;
-    margin: 10px;
-    align-items: center;
-    justify-content: flex-start;
-  }
-  .title{
-    flex-grow: 1;
-    color: #7f8c8d;
-    margin-left: 50px;
-    text-align: left;
   }
 </style>
